@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('email_subscriptions', function (Blueprint $table) {
+            // ID
+            $table->id();
+
+            // Email
+            $table->string('email')->unique();
+            $table->boolean('is_confirmed')->default(false);
+            $table->string('confirmation_token')->nullable();
+
+            // LOG
+            $table->timestamps('subscribed_at');
+            $table->timestamps('unsubscribed_at')->nullable();
+            $table->softDeletes();
+            });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('email_subscriptions');
+    }
+};
